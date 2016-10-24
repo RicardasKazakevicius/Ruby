@@ -54,4 +54,62 @@ describe Vehicle do
     vehicle.free
     expect(vehicle.reserved).to eq(false)
   end
+
+  it 'checks if same object cannot be stored in the file' do
+    vehicle = described_class.new('LEK:111')
+    vehicle.make = 'Lexus'
+    vehicle.create
+    vehicle_temp = described_class.new('LEK:111')
+    vehicle_temp.make = 'Toyota'
+    vehicle.create
+
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle = vehicle_object if vehicle_object.license_plate.eql?('LEK:111')
+    end
+    expect(vehicle.make).to eq('LEXUS')
+    vehicle.delete
+    vehicle_temp.delete
+  end
+
+  it 'checks if object stored in the file' do
+    vehicle = described_class.new('LEK:100')
+    vehicle.create
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle = vehicle_object if vehicle_object.license_plate.eql?('LEK:100')
+    end
+    expect(vehicle.license_plate).to eq('LEK:100')
+    vehicle.delete
+  end
+
+  it 'checks if method gets all vehicles from file' do
+    vehicle_list = []
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle_list << vehicle_object
+    end
+    expect(described_class.list.size).to eq(vehicle_list.size)
+  end
+
+  it 'checks if method gets all not reserved vehicles from file' do
+    vehicle_list = []
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle_list << vehicle_object
+    end
+    expect(described_class.not_reserved.size).to eq(vehicle_list.size)
+  end
+
+  it 'gets vehicle by number' do
+    first_vehicle = described_class.list[0]
+    first_vehicle_by_number = described_class.get_by_number(1)
+		expect(first_vehicle.license_plate).to eq(first_vehicle_by_number.license_plate)
+  end
+
+  it 'deletes vehicle' do
+    vehicle = described_class.new('LLL:911')
+    vehicle.create
+    vehicle.delete
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle = vehicle_object
+    end
+    expect(vehicle.license_plate).not_to eq('LLL:911')
+  end
 end

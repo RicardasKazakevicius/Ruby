@@ -31,27 +31,27 @@ class Vehicle
 
   # returns all vehicle object from yaml file
   def self.list
-    vehicle_list = []
-    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
-      vehicle_list << vehicle_object
+    vehicles = []
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle|
+      vehicles << vehicle
     end
-    vehicle_list
+    vehicles
   end
 
   def self.not_reserved
-    vehicle_list = []
-    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
-      vehicle_list << vehicle_object unless vehicle_object.reserved
+    vehicles = []
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle|
+      vehicles << vehicle unless vehicle.reserved
     end
-    vehicle_list
+    vehicles
   end
 
   def delete
-    vehicle_list = Vehicle.list
+    vehicles = Vehicle.list
     file = File.open('vehicles.yaml', 'w')
     file.close
-    vehicle_list.each do |vehicle|
-      vehicle.write_to_file unless vehicle.license_plate == license_plate
+    vehicles.each do |vehicle|
+      vehicle.write_to_file unless vehicle.license_plate.eql?(license_plate)
     end
   end
 

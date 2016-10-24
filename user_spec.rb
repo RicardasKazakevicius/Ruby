@@ -41,4 +41,40 @@ describe User do
     user.password = '1234ab'
     expect(user.password).not_to eq('1234ab')
   end
+
+  it 'checks if user is stored in the file' do
+    user = described_class.new('ricardas', 'ramANauskas')
+    user.email = 'ricardas9000@gmail.com'
+    user.create
+    YAML.load_stream(File.open('users.yaml')) do |users|
+      user = users if users.email.eql?('ricardas9000@gmail.com')
+    end
+    expect(user.email).to eq('ricardas9000@gmail.com')
+    user.delete
+  end
+
+  it 'checks if user with same email cannot be stored in the file' do
+    user = described_class.new('Ricardas', 'ramANauskas')
+    user.email = 'ricardas@gmail.com'
+    user.create
+    user2 = described_class.new('Rokas', 'Tadas')
+    user2.email = 'ricardas@gmail.com'
+		user2.create
+		
+    YAML.load_stream(File.open('users.yaml')) do |users|
+      user1 = users if users.email.eql?('ricardas@gmail.com')
+    end
+    expect(user.name).to eq('Ricardas')
+  end
+
+  it 'deletes' do
+    user = described_class.new('Ricardas', 'ramANauskas')
+    user.email = 'ricardas@gmail.com'
+    user.create
+    user.delete
+    YAML.load_stream(File.open('users.yaml')) do |user_obj|
+      user = user_obj
+    end
+    expect(user.email).not_to eq('ricardas@gmail.com')
+  end
 end

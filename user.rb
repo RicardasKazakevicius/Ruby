@@ -39,6 +39,23 @@ class User
     file.close
   end
 
+  def self.list
+    users = []
+    YAML.load_stream(File.open('users.yaml')) do |user|
+      users << user
+    end
+    users
+  end
+
+  def delete
+    users = User.list
+    file = File.open('users.yaml', 'w')
+    file.close
+    users.each do |user|
+      user.write_to_file unless user.email.eql?(email)
+    end
+  end
+
   def amount_to_pay=(amount_to_pay)
     @user_finances.amount_to_pay = amount_to_pay
   end

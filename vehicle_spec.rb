@@ -55,7 +55,7 @@ describe Vehicle do
     expect(vehicle.reserved).to eq(false)
   end
 
-  it 'checks if same object cannot be stored in the file' do
+  it 'checks if same vehicle cannot be stored in the file' do
     vehicle = described_class.new('LEK:111')
     vehicle.make = 'Lexus'
     vehicle.create
@@ -71,7 +71,7 @@ describe Vehicle do
     vehicle_temp.delete
   end
 
-  it 'checks if object stored in the file' do
+  it 'checks if vehicle is stored in the file' do
     vehicle = described_class.new('LEK:100')
     vehicle.create
     YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
@@ -103,7 +103,7 @@ describe Vehicle do
     expect(vehicle.license_plate).to eq(vehicle_by_number.license_plate)
   end
 
-  it 'deletes vehicle' do
+  it 'deletes' do
     vehicle = described_class.new('LLL:911')
     vehicle.create
     vehicle.delete

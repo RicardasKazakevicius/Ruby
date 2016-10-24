@@ -98,9 +98,9 @@ describe Vehicle do
   end
 
   it 'gets vehicle by number' do
-    first_vehicle = described_class.list[0]
-    first_vehicle_by_number = described_class.get_by_number(1)
-		expect(first_vehicle.license_plate).to eq(first_vehicle_by_number.license_plate)
+    vehicle = described_class.list[0]
+    vehicle_by_number = described_class.get_by_number(1)
+    expect(vehicle.license_plate).to eq(vehicle_by_number.license_plate)
   end
 
   it 'deletes vehicle' do

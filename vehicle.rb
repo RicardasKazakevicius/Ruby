@@ -15,8 +15,8 @@ class Vehicle
 
   def create
     different_vehicle = true
-    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
-      different_vehicle = false if vehicle_object.license_plate == license_plate
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle|
+      different_vehicle = false if vehicle.license_plate.eql?(license_plate)
     end
 
     return unless different_vehicle

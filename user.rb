@@ -23,6 +23,22 @@ class User
     @user_information.birth_date = birth_date
   end
 
+  def create
+    different_user = true
+    YAML.load_stream(File.open('users.yaml')) do |user|
+      different_user = false if user.email.eql?(email)
+    end
+
+    return unless different_user
+    write_to_file
+  end
+
+  def write_to_file
+    file = File.open('users.yaml', 'a+')
+    YAML.dump(self, file)
+    file.close
+  end
+
   def amount_to_pay=(amount_to_pay)
     @user_finances.amount_to_pay = amount_to_pay
   end

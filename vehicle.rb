@@ -9,6 +9,52 @@ class Vehicle
     @vehicle_information.free
   end
 
+  def self.get_by_number(number)
+    Vehicle.list[number - 1]
+  end
+
+  def create
+    different_vehicle = true
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      different_vehicle = false if vehicle_object.license_plate == license_plate
+    end
+
+    return unless different_vehicle
+    write_to_file
+  end
+
+  def write_to_file
+    file = File.open('vehicles.yaml', 'a+')
+    YAML.dump(self, file)
+    file.close
+  end
+
+  # returns all vehicle object from yaml file
+  def self.list
+    vehicle_list = []
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle_list << vehicle_object
+    end
+    vehicle_list
+  end
+
+  def self.not_reserved
+    vehicle_list = []
+    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
+      vehicle_list << vehicle_object unless vehicle_object.reserved
+    end
+    vehicle_list
+  end
+
+  def delete
+    vehicle_list = Vehicle.list
+    file = File.open('vehicles.yaml', 'w')
+    file.close
+    vehicle_list.each do |vehicle|
+      vehicle.write_to_file unless vehicle.license_plate == license_plate
+    end
+  end
+
   def make=(make)
     @make = make.upcase
   end

@@ -4,17 +4,11 @@ require './user_finances.rb'
 class User
   attr_reader :name, :surname
 
-  def initialize
+  def initialize(name, surname)
+    @name = name.capitalize
+    @surname = surname.capitalize
     @user_information = UserInformation.new
     @user_finances = UserFinances.new
-  end
-
-  def name=(name)
-    @name = name.capitalize
-  end
-
-  def surname=(surname)
-    @surname = surname.capitalize
   end
 
   def email=(email)

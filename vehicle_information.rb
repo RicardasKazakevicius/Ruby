@@ -12,7 +12,7 @@ class VehicleInformation
 
   def price=(price)
     return unless price.is_a? Numeric
-      @price = price
+    @price = price
   end
 
   def reserve

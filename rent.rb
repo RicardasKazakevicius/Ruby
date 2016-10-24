@@ -26,7 +26,7 @@ class Rent
     user.amount_to_pay = price
     vehicle.reserve
   end
-
+=begin
   def discount_code=(code)
     @discount_code = code.upcase
   end
@@ -34,4 +34,5 @@ class Rent
   def price_with_discount
     vehicle_price * duration * CONSTANT_DISCOUNT
   end
+=end
 end

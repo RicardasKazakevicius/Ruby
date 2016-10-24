@@ -1,4 +1,4 @@
-require './spec./spec_helper.rb'
+require './spec_helper.rb'
 require './rent.rb'
 require './user.rb'
 require './vehicle.rb'
@@ -46,32 +46,17 @@ describe Rent do
     time.start_at = '9:00'
     time.end_at = '11:00'
     rent.duration = time
-    user = User.new
+    user = User.new('ricardas', 'ramANauskas')
     rent.start(user, vehicle)
     expect(user.amount_to_pay).to eq(20)
   end
-=begin
-  it 'ends rent' do
-    rent = described_class.new
-    vehicle = Vehicle.new('ffa:123')
-    vehicle.price_for_hour = 10
-    rent.vehicle_price = vehicle.price_for_hour
-    time = Time.new
-    time.start_at = '9:00'
-    time.end_at = '11:00'
-    rent.duration = time
-    user = User.new
-    rent.start(user, vehicle)
-    rent.end(vehicle)
-    expect(vehicle.reserved).to eq(false)
-  end
-=end
+
   it 'reserves vehicle' do
     rent = described_class.new
     vehicle = Vehicle.new('ffa:123')
     vehicle.price_for_hour = 10
     rent.vehicle_price = vehicle.price_for_hour
-    user = User.new
+    user = User.new('ricardas', 'ramANauskas')
     time = Time.new
     time.start_at = '9:00'
     time.end_at = '11:00'
@@ -79,7 +64,7 @@ describe Rent do
     rent.start(user, vehicle)
     expect(vehicle.reserved).to eq(true)
   end
-
+=begin
   it 'sets discount code' do
     rent = described_class.new
     rent.discount_code = 'DISCOUNT'
@@ -98,4 +83,5 @@ describe Rent do
     rent.duration = time
     expect(rent.price_with_discount).to eq(17)
   end
+=end
 end

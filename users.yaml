@@ -1,9 +1,9 @@
 --- !ruby/object:User
-name: Robertas
-surname: Petrauskas
+name: Saulius
+surname: Skve
 user_information: !ruby/object:UserInformation
-  birth_date: 1997-02-09
-  email: robertas@mail.com
-  password: 12344212421fsa
+  birth_date: 1992-09-09
+  email: s@
+  password: '12341234'
 user_finances: !ruby/object:UserFinances
   amount_to_pay: 0

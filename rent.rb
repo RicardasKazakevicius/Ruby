@@ -16,9 +16,9 @@ class Rent
   def price
     price = vehicle_price * duration
     if duration >= 24
-      price * 0.5
+      (price * 0.5 * 100).round / 100.0
     else
-      price
+      (price * 100).round / 100.0
     end
   end
 

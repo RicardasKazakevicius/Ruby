@@ -47,6 +47,14 @@ class User
     users
   end
 
+  def self.get_by_email(email)
+    user = User.new('', '')
+    YAML.load_stream(File.open('users.yaml')) do |user_obj|
+      user = user_obj if user_obj.email.eql?(email)
+    end
+    user
+  end
+
   def delete
     users = User.list
     file = File.open('users.yaml', 'w')

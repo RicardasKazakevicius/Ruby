@@ -1,10 +1,21 @@
 require './spec./spec_helper.rb'
 require './user.rb'
-describe User do
-  it 'is equal to same stirng in capitalize letter' do
-    user = described_class.new('ricardas', 'ramANauskas')
-    expect(user.name + user.surname).to eq('RicardasRamanauskas')
+
+RSpec::Matchers.define :have_name_surname do |expected|
+  match do |actual|
+    (actual.name + actual.surname).eql?(expected)
   end
+end
+
+RSpec.describe User.new('Tomas', 'Ss') do
+  it { is_expected.to have_name_surname('TomasSs') }
+end
+
+describe User do
+  # it 'is equal to same stirng in capitalize letter' do
+  #   user = described_class.new('ricardas', 'ramANauskas')
+  #   expect(user.name + user.surname).to eq('RicardasRamanauskas')
+  # end
 
   it 'is equal to the date' do
     user = described_class.new('ricardas', 'ramANauskas')
@@ -55,26 +66,36 @@ describe User do
 
   it 'checks if user with same email cannot be stored in the file' do
     user = described_class.new('Ricardas', 'ramANauskas')
-    user.email = 'ricardas@gmail.com'
+    user.email = 'ricardas1234@gmail.com'
     user.create
     user2 = described_class.new('Rokas', 'Tadas')
-    user2.email = 'ricardas@gmail.com'
-		user2.create
-		
+    user2.email = 'ricardas1234@gmail.com'
+    user2.create
+
     YAML.load_stream(File.open('users.yaml')) do |users|
-      user1 = users if users.email.eql?('ricardas@gmail.com')
+      user = users if users.email.eql?('ricardas1234@gmail.com')
     end
     expect(user.name).to eq('Ricardas')
+    user.delete
   end
 
   it 'deletes' do
     user = described_class.new('Ricardas', 'ramANauskas')
-    user.email = 'ricardas@gmail.com'
+    user.email = 'ricardas112@gmail.com'
     user.create
     user.delete
     YAML.load_stream(File.open('users.yaml')) do |user_obj|
       user = user_obj
     end
-    expect(user.email).not_to eq('ricardas@gmail.com')
+    expect(user.email).not_to eq('ricardas112@gmail.com')
+  end
+
+  it 'gets by email' do
+    user = described_class.new('Ricardas2000', 'ramANauskas')
+    user.email = 'ricardas2000@gmail.com'
+    user.create
+    user1 = described_class.get_by_email('ricardas2000@gmail.com')
+    expect(user1.email).to eq(user.email)
+    user.delete
   end
 end

@@ -1,11 +1,21 @@
 require './spec_helper.rb'
 require './vehicle.rb'
-describe Vehicle do
-  it 'sets license plate' do
-    vehicle = described_class.new('AFS:124')
-    expect(vehicle.license_plate).to eq('AFS:124')
-  end
 
+RSpec::Matchers.define :have_license_plate do |expected|
+  match do |actual|
+    actual.license_plate.eql?(expected)
+  end
+end
+
+RSpec.describe Vehicle.new('ADS:123') do
+  it { is_expected.to have_license_plate('ADS:123') }
+end
+
+describe Vehicle do
+  # it 'sets license plate' do
+  #   vehicle = described_class.new('AFS:124')
+  #   expect(vehicle.license_plate).to eq('AFS:124')
+  # end
   it 'make is in capitalize letters' do
     vehicle = described_class.new('ABD:123')
     vehicle.make = 'hoNda'

@@ -3,49 +3,121 @@ require './user.rb'
 require './vehicle.rb'
 require './rent.rb'
 # This class defines user interface
-puts
-puts 'Select vehicle you want to rent:'
-
-number = 0
-Vehicle.list.each do |vehicle|
-  puts number += 1
-  puts vehicle.make
-  puts vehicle.model
-  print 'price for hour: '
-  puts vehicle.price_for_hour
-end
-
-vehicle = Vehicle.get_by_number(gets.to_i)
-puts 'Your selected vehicle is: '
-puts vehicle.make
-puts vehicle.model
-
 =begin
-number = 0
-pos = gets.to_i
-Vehicle.list.each do |vehicle_list|
-  number += 1
-  vehicle = vehicle_list if pos == number
+loged_in = false
+puts 'Enter 1 to log in'
+puts 'Enter 2 to sign in'
+puts 'Enter 0 to end program'
+case gets.to_i
+when 1
+
+  puts 'Log in'
+  puts 'Enter your name'
+  name = gets.chomp
+
+  puts 'Enter your surname'
+  surname = gets.chomp
+
+  user = User.new(name, surname)
+
+  puts 'Enter your date of birth'
+  user.birth_date = gets.chomp
+
+  puts 'Enter your email'
+  user.email = gets.chomp
+
+  puts 'Enter your password'
+  user.password = gets.chomp
+  user.create
+
+when 2
+  puts 'Sign in'
+  puts 'Enter your email'
+  email = gets.chomp.to_s
+  user = User.get_by_email(email)
+  if user.email.eql?(email)
+    puts 'Enter your password'
+    password = gets.chomp.to_s
+    if user.password.eql?(password)
+      loged_in = true
+      puts
+      puts 'Successfuly loged in'
+    else
+      puts 'Wrong password'
+    end
+  else
+    puts "No user with #{email} email found"
+  end
+when 0
+  puts 'Program end'
+  exit
 end
-puts vehicle.make
 
-rent = Rent.new
-rent.vehicle_price = vehicle.price_for_hour
+if loged_in.eql?(true)
+  start = false
+  vehicle_selected = false
+  time_selected = false
+  until start
+    puts
+    puts 'Enter 1 to select vehicle you want to rent'
+    puts 'Enter 2 to select rent time'
+    puts 'Enter 3 to start rent' if time_selected && vehicle_selected
+    puts 'Enter 0 to end program'
 
-puts 'Enter time when you want to start your rent'
-time = Time.new
-time.start_at = gets
-puts 'Enter time when you want to end your rent'
-time.end_at = gets
+    case gets.to_i
 
-rent.duration = time
+    when 1
+      number = 0
+      puts
+      Vehicle.list.each do |vehicle|
+        puts number += 1
+        puts vehicle.make
+        puts vehicle.model
+        print 'price for hour: '
+        puts vehicle.price_for_hour
+      end
 
-puts 'Your selected vehicle selected is'
-puts vehicle.make
-puts vehicle.model
-print 'Price to pay: '
-puts rent.price
+      vehicle = Vehicle.get_by_number(gets.to_i)
+      puts 'Your selected vehicle is: '
+      puts vehicle.make
+      puts vehicle.model
+      vehicle_selected = true
 
+    when 2
+      rent = Rent.new
+      puts 'Enter time when you want to start your rent'
+      time = Time.new
+      time.start_at = gets
+      puts 'Enter time when you want to end your rent'
+      time.end_at = gets
+
+      rent.duration = time
+      time_selected = true
+
+      puts 'Your selected rent duration is:'
+      print rent.duration
+      puts ' hours'
+
+    when 3
+      start = true
+      rent.vehicle_price = vehicle.price_for_hour
+
+      vehicle = Vehicle.get_by_number(gets.to_i)
+      puts 'Your selected vehicle is: '
+      puts vehicle.make
+      puts vehicle.model
+
+      print 'Price to pay: '
+      puts rent.price
+
+    when 0
+      puts 'Program end'
+      exit
+    end
+  end
+end
+=end
+=begin
 vehicle9 = Vehicle.new('LEK:911')
 vehicle9.make = 'Lexus'
 vehicle9.model = 'IS300'

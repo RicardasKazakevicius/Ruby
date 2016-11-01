@@ -1,21 +1,11 @@
 require './spec_helper.rb'
 require './vehicle.rb'
-
-RSpec::Matchers.define :have_license_plate do |expected|
-  match do |actual|
-    actual.license_plate.eql?(expected)
-  end
-end
-
-RSpec.describe Vehicle.new('ADS:123') do
-  it { is_expected.to have_license_plate('ADS:123') }
-end
-
 describe Vehicle do
-  # it 'sets license plate' do
-  #   vehicle = described_class.new('AFS:124')
-  #   expect(vehicle.license_plate).to eq('AFS:124')
-  # end
+  it 'sets license plate' do
+    vehicle = described_class.new('AFS:124')
+    expect(vehicle.license_plate).to eq('AFS:124')
+  end
+
   it 'make is in capitalize letters' do
     vehicle = described_class.new('ABD:123')
     vehicle.make = 'hoNda'
@@ -37,7 +27,7 @@ describe Vehicle do
   it 'does not sets vehicle year if date is letter than now' do
     vehicle = described_class.new('ABD:322')
     vehicle.year = '2018-01-02'
-    expect(vehicle.year).not_to eq(Date.parse('2018-01-02'))
+    expect(vehicle.year).to be_nil 
   end
 
   it 'sets rent price' do
@@ -82,6 +72,28 @@ describe Vehicle do
   end
 
   it 'checks if vehicle is stored in the file' do
+
+    test_file = File.open('test_vehicles.yaml', 'w')
+
+    vehicle1 = described_class.new('AKL:340')
+    vehicle1.make = 'Honda'
+    vehicle1.model = 'Accord'
+    vehicle1.year = '2010-02-11'
+    vehicle1.price_for_hour = 10
+    YAML.dump(vehicle1, test_file)
+
+    test_file.close
+
+    test_vehicles = []
+    YAML.load_stream(File.open('test_vehicles.yaml')) do |vehicle|
+      test_vehicles = vehicle
+    end
+    
+    vehicles = described_class.list[0]
+
+    expect(vehicles.license_plate).to eq(test_vehicles.license_plate)
+=begin
+
     vehicle = described_class.new('LEK:100')
     vehicle.create
     YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
@@ -89,6 +101,7 @@ describe Vehicle do
     end
     expect(vehicle.license_plate).to eq('LEK:100')
     vehicle.delete
+=end
   end
 
   it 'checks if method gets all vehicles from file' do
@@ -121,5 +134,5 @@ describe Vehicle do
       vehicle = vehicle_object
     end
     expect(vehicle.license_plate).not_to eq('LLL:911')
-  end
+  end	
 end

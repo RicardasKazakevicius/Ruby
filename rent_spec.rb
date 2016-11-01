@@ -3,6 +3,38 @@ require './rent.rb'
 require './user.rb'
 require './vehicle.rb'
 require './time.rb'
+=begin
+RSpec::Matchers.define :have_rent_price do |expected|
+  match do |actual|
+    time = Time.new
+    time.start_at = '9:00'
+    time.end_at = '10:30'
+
+    vehicle = Vehicle.new('ffa:123')
+    vehicle.price_for_hour = 20
+    actual.vehicle_price = vehicle.price_for_hour
+
+    actual.duration = time
+    actual.name == expected.name &&
+      actual.surname == expected.surname
+  end
+end
+
+RSpec.describe Rent do
+  subject(:rent) { described_class.new }
+
+  context 'when duration is less than day' do
+    it 'is has not discount' do
+      expect(rent).to have_rent_price(described_class.new)
+    end
+  end
+
+  context 'when duration is more than day' do
+    it 'is has discount' do
+      expect(rent).to_not have_rent_price(described_class.new)
+    end
+  end
+=end
 describe Rent do
   it 'calculates the duration' do
     rent = described_class.new
@@ -47,8 +79,7 @@ describe Rent do
     time.end_at = '11:00'
     rent.duration = time
     user = User.new('ricardas', 'ramANauskas')
-    rent.start(user, vehicle)
-    expect(user.amount_to_pay).to eq(20)
+    expect { rent.start(user, vehicle) }.to change{ user.amount_to_pay }.from(0).to(20)
   end
 
   it 'reserves vehicle' do
@@ -64,11 +95,15 @@ describe Rent do
     rent.start(user, vehicle)
     expect(vehicle.reserved).to eq(true)
   end
-=begin
+
   it 'sets discount code' do
     rent = described_class.new
-    rent.discount_code = 'DISCOUNT'
-    expect(rent.discount_code).to eq('DISCOUNT')
+    rent.discount_code_file = '911'
+    discount = []
+		YAML.load_stream(File.open('discount.yaml')) do |discount_obj|
+      discount << discount_obj
+    end
+    expect(discount).to contain_exactly('911')
   end
 
   it 'gets price with discount' do
@@ -76,12 +111,10 @@ describe Rent do
     vehicle = Vehicle.new('ffa:123')
     vehicle.price_for_hour = 20
     rent.vehicle_price = vehicle.price_for_hour
-    rent.discount_code = 'DISCOUNT'
     time = Time.new
     time.start_at = '9:00'
     time.end_at = '10:00'
     rent.duration = time
-    expect(rent.price_with_discount).to eq(17)
+    expect(rent.price_with_discount('911')).to eq(17)
   end
-=end
 end

@@ -3,6 +3,8 @@ require './user.rb'
 require './vehicle.rb'
 require './rent.rb'
 # This class defines user interface
+# to eql, to be_nil, to have_attributes, 
+# to change, to contain_exactly
 =begin
 loged_in = false
 puts 'Enter 1 to log in'
@@ -69,7 +71,7 @@ if loged_in.eql?(true)
     when 1
       number = 0
       puts
-      Vehicle.list.each do |vehicle|
+      Vehicle.not_reserved.each do |vehicle|
         puts number += 1
         puts vehicle.make
         puts vehicle.model
@@ -116,8 +118,7 @@ if loged_in.eql?(true)
     end
   end
 end
-=end
-=begin
+
 vehicle9 = Vehicle.new('LEK:911')
 vehicle9.make = 'Lexus'
 vehicle9.model = 'IS300'
@@ -138,6 +139,13 @@ vehicle4.model = '500'
 vehicle4.year = '2011-10-21'
 vehicle4.price_for_hour = 5
 vehicle4.create
+
+vehicle1 = Vehicle.new('AAS:332')
+vehicle1.make = 'Subaru'
+vehicle1.model = 'Forester'
+vehicle1.year = '2008-01-11'
+vehicle1.price_for_hour = 8
+vehicle1.create
 
 vehicle2.delete
 print_vehicles

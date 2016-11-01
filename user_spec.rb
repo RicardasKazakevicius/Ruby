@@ -1,21 +1,36 @@
 require './spec./spec_helper.rb'
 require './user.rb'
-
-RSpec::Matchers.define :have_name_surname do |expected|
+# require 'rspec/expectations'
+=begin
+RSpec::Matchers.define :have_date do |expected|
   match do |actual|
-    (actual.name + actual.surname).eql?(expected)
+    actual.birth_date == expected.birth_date
   end
 end
 
-RSpec.describe User.new('Tomas', 'Ss') do
-  it { is_expected.to have_name_surname('TomasSs') }
-end
+RSpec.describe User do
+  subject(:user) { described_class.new('Tomas', 'Ss') }
 
+  context 'when same factory' do
+    it 'is a duplicate' do
+      user.birth_date = '1998-09-30'
+      user1 = described_class.new('Tomas', 'Ss')
+      user1.birth_date = '1998-09-30'
+      expect(user).to have_date(user1)
+    end
+  end
+
+  context 'when different factory' do
+    it 'is not a duplicate' do
+      expect(user).to_not have_date(described_class.new('Tomas', 'As'))
+    end
+  end
+=end
 describe User do
-  # it 'is equal to same stirng in capitalize letter' do
-  #   user = described_class.new('ricardas', 'ramANauskas')
-  #   expect(user.name + user.surname).to eq('RicardasRamanauskas')
-  # end
+  it 'is equal to same stirng in capitalize letter' do
+    user = described_class.new('ricardas', 'ra')
+    expect(user).to have_attributes('name' => 'Ricardas', 'surname' => 'Ra')
+  end
 
   it 'is equal to the date' do
     user = described_class.new('ricardas', 'ramANauskas')

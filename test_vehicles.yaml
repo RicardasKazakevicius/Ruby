@@ -1,0 +1,8 @@
+--- !ruby/object:Vehicle
+license_plate: AKL:340
+vehicle_information: !ruby/object:VehicleInformation
+  reserved: false
+  price: 10
+  year: 2010-02-11
+make: HONDA
+model: ACCORD

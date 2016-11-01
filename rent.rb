@@ -26,13 +26,16 @@ class Rent
     user.amount_to_pay = price
     vehicle.reserve
   end
-=begin
-  def discount_code=(code)
-    @discount_code = code.upcase
+
+  def discount_code_file=(code)
+    @discount_code = code.to_s
+    file = File.open('discount.yaml', 'w')
+    YAML.dump(code, file)
+    file.close
   end
 
-  def price_with_discount
-    vehicle_price * duration * CONSTANT_DISCOUNT
+  def price_with_discount(discount_code)
+    discount = YAML.load_file('discount.yaml')
+    vehicle_price * duration * CONSTANT_DISCOUNT if discount_code.eql?(discount)
   end
-=end
 end

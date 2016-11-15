@@ -27,7 +27,7 @@ describe Vehicle do
   it 'does not sets vehicle year if date is letter than now' do
     vehicle = described_class.new('ABD:322')
     vehicle.year = '2018-01-02'
-    expect(vehicle.year).to be_nil 
+    expect(vehicle.year).to be_nil
   end
 
   it 'sets rent price' do
@@ -72,7 +72,6 @@ describe Vehicle do
   end
 
   it 'checks if vehicle is stored in the file' do
-
     test_file = File.open('test_vehicles.yaml', 'w')
 
     vehicle1 = described_class.new('AKL:340')
@@ -88,20 +87,10 @@ describe Vehicle do
     YAML.load_stream(File.open('test_vehicles.yaml')) do |vehicle|
       test_vehicles = vehicle
     end
-    
+
     vehicles = described_class.list[0]
 
     expect(vehicles.license_plate).to eq(test_vehicles.license_plate)
-=begin
-
-    vehicle = described_class.new('LEK:100')
-    vehicle.create
-    YAML.load_stream(File.open('vehicles.yaml')) do |vehicle_object|
-      vehicle = vehicle_object if vehicle_object.license_plate.eql?('LEK:100')
-    end
-    expect(vehicle.license_plate).to eq('LEK:100')
-    vehicle.delete
-=end
   end
 
   it 'checks if method gets all vehicles from file' do
@@ -134,5 +123,5 @@ describe Vehicle do
       vehicle = vehicle_object
     end
     expect(vehicle.license_plate).not_to eq('LLL:911')
-  end	
+  end
 end

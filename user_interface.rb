@@ -2,8 +2,9 @@ require 'yaml'
 require './user.rb'
 require './vehicle.rb'
 require './rent.rb'
+require './insurance.rb'
 # This class defines user interface
-# to eql, to be_nil, to have_attributes, 
+# to eql, to be_nil, to have_attributes,
 # to change, to contain_exactly
 =begin
 loged_in = false

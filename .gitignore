@@ -1,5 +1,2 @@
 /coverage
 /project
-/spec
-.rspec
-spec_helper.rb

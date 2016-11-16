@@ -120,6 +120,8 @@ if loged_in.eql?(true)
   end
 end
 
+
+
 vehicle9 = Vehicle.new('LEK:911')
 vehicle9.make = 'Lexus'
 vehicle9.model = 'IS300'

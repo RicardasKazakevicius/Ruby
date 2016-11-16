@@ -55,7 +55,7 @@ class User
     user
   end
 
-  def delete
+  def self.delete(email)
     users = User.list
     file = File.open('users.yaml', 'w')
     file.close

@@ -3,8 +3,8 @@ name: Saulius
 surname: Skve
 user_information: !ruby/object:UserInformation
   birth_date: 1992-09-09
-  email: s@
   password: '12341234'
+  email: s@
 user_finances: !ruby/object:UserFinances
   amount_to_pay: 0
 --- !ruby/object:User
@@ -12,8 +12,8 @@ name: Ricardas
 surname: Kazakevicius
 user_information: !ruby/object:UserInformation
   birth_date: 1991-10-10
-  email: ricardas@gmail.com
   password: '12341234'
+  email: ricardas@gmail.com
 user_finances: !ruby/object:UserFinances
   amount_to_pay: 0
 --- !ruby/object:User
@@ -21,7 +21,7 @@ name: Saulius
 surname: Saa
 user_information: !ruby/object:UserInformation
   birth_date: 1991-01-20
-  email: saulius54@yahoo.com
   password: '123400000'
+  email: saulius54@yahoo.com
 user_finances: !ruby/object:UserFinances
   amount_to_pay: 0

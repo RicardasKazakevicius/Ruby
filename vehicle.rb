@@ -46,7 +46,7 @@ class Vehicle
     vehicles
   end
 
-  def delete
+  def self.delete(license_plate)
     vehicles = Vehicle.list
     file = File.open('vehicles.yaml', 'w')
     file.close

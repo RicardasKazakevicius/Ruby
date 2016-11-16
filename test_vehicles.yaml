@@ -6,3 +6,19 @@ vehicle_information: !ruby/object:VehicleInformation
   year: 2010-02-11
 make: HONDA
 model: ACCORD
+--- !ruby/object:Vehicle
+license_plate: KKA:312
+vehicle_information: !ruby/object:VehicleInformation
+  reserved: false
+  price: 5
+  year: 2011-10-21
+make: FIAT
+model: '500'
+--- !ruby/object:Vehicle
+license_plate: AAS:332
+vehicle_information: !ruby/object:VehicleInformation
+  reserved: false
+  price: 8
+  year: 2008-01-11
+make: SUBARU
+model: FORESTER

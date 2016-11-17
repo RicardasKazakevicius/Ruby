@@ -9,6 +9,6 @@ class Insurance
   def calculate(rent, user)
     @cost = rent.price * 0.25
     @cost += cost * 0.1 unless
-    Date.today - CONSTANT_24_YEARS >= user.birth_date
+    Date.today - CONSTANT_24_YEARS > user.birth_date
   end
 end

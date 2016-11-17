@@ -1,3 +1,4 @@
+require 'date'
 require './spec_helper.rb'
 require './insurance.rb'
 require './vehicle.rb'
@@ -9,6 +10,8 @@ RSpec::Matchers.define :insurance_cost do |expected|
     actual.cost == expected
   end
 end
+
+CONSTANT_24_YEARS = 365.25 * 24
 
 RSpec.describe Insurance do
   subject(:insurance) { described_class.new }
@@ -29,7 +32,15 @@ RSpec.describe Insurance do
   it 'calculates insurance cost if users age is more than 24' do
     set_vehicle_price
     set_time
-    user.birth_date = '1980-09-30'
+    user.birth_date = (Date.today - CONSTANT_24_YEARS - 1).to_s
+    insurance.calculate(rent, user)
+    expect(insurance).to insurance_cost(5)
+  end
+
+  it 'calculates insurance cost if users age is 24' do
+    set_vehicle_price
+    set_time
+    user.birth_date = (Date.today - CONSTANT_24_YEARS - 1).to_s
     insurance.calculate(rent, user)
     expect(insurance).to insurance_cost(5)
   end
@@ -37,7 +48,7 @@ RSpec.describe Insurance do
   it 'calculates insurance cost if users age is less than 24' do
     set_vehicle_price
     set_time
-    user.birth_date = '1996-09-30'
+    user.birth_date = (Date.today - CONSTANT_24_YEARS + 1).to_s
     insurance.calculate(rent, user)
     expect(insurance).to insurance_cost(5.5)
   end
